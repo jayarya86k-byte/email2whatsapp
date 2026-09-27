@@ -1,0 +1,94 @@
+{
+  "agent": {
+    "name": "Ultron",
+    "workspace": "~/ultron-workspace",
+    "max_steps": 24,
+    "step_timeout_seconds": 300,
+    "history_limit": 200,
+    "autonomous": false
+  },
+  "llm": {
+    "provider": "ollama",
+    "base_url": "http://127.0.0.1:11434",
+    "model": "qwen2.5-coder:14b-instruct",
+    "planner_model": "",
+    "temperature": 0.1,
+    "top_p": 0.9,
+    "max_tokens": 2048,
+    "num_ctx": 8192,
+    "keep_alive": "30m",
+    "offline_only": true,
+    "allowed_hosts": ["127.0.0.1", "localhost", "::1", "0.0.0.0"]
+  },
+  "security": {
+    "audit_log": "~/.ultron/audit/audit.jsonl",
+    "vault_file": "~/.ultron/vault.json",
+    "sandbox_root": "~/ultron-workspace",
+    "require_confirmation_above_risk": 0.5,
+    "deny_risk_at_or_above": 0.95,
+    "redact_secrets_in_output": true,
+    "max_output_chars": 20000,
+    "forbidden_path_patterns": [
+      "~/.ssh",
+      "~/.aws",
+      "~/.gnupg",
+      "~/.config/gcloud",
+      "/etc/shadow",
+      "/etc/sudoers",
+      "**/id_rsa*",
+      "**/*.pem",
+      "**/.env"
+    ],
+    "network_allowlist": [],
+    "overrides": {
+      "delete_file": "ask",
+      "run_shell": "ask",
+      "run_python": "ask",
+      "generate_challan": "ask"
+    }
+  },
+  "voice": {
+    "enabled": true,
+    "stt": {
+      "backend": "auto",
+      "model": "base.en",
+      "language": "en",
+      "binary": "whisper-cli",
+      "model_path": "",
+      "compute_type": "int8"
+    },
+    "tts": {
+      "backend": "auto",
+      "voice": "en-in-rahul-medium",
+      "binary": "piper",
+      "rate": 175
+    },
+    "wake_word": "",
+    "push_to_talk_key": "ctrl+shift+space"
+  },
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8765,
+    "open_browser": true,
+    "session_token": "",
+    "cors_origins": []
+  },
+  "finance": {
+    "currency": "INR",
+    "default_fy": "2025-26",
+    "payer_pan": "",
+    "challan_bank": "State Bank of India",
+    "taxpayer_type": "individual"
+  },
+  "tools": {
+    "disabled": [],
+    "allow_shell": true,
+    "shell_timeout_seconds": 120,
+    "allow_network_tools": false
+  },
+  "memory": {
+    "db_path": "~/.ultron/memory.db",
+    "autosave_transcripts": true,
+    "retention_days": 180
+  }
+}

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultron · local super agent</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="dot" id="status-dot"></span>
+    <strong>ULTRON</strong>
+    <span class="muted" id="status-line">connecting…</span>
+  </div>
+  <nav>
+    <button data-view="chat" class="active">Chat</button>
+    <button data-view="tasks">Tasks</button>
+    <button data-view="tools">Tools</button>
+    <button data-view="security">Security</button>
+    <button data-view="audit">Audit</button>
+    <button data-view="settings">Settings</button>
+  </nav>
+  <div class="right">
+    <button id="voice-btn" title="Push to talk (Ctrl+Shift+Space)">🎙 Voice</button>
+    <label class="switch"><input type="checkbox" id="auto-approve"> auto-approve low risk</label>
+  </div>
+</header>
+
+<main>
+  <section id="view-chat" class="view active">
+    <div class="layout">
+      <div class="pane">
+        <div id="stream" class="stream"></div>
+        <div id="approval" class="approval hidden"></div>
+        <form id="composer" class="composer">
+          <textarea id="input" rows="2" placeholder="Ask Ultron to do something… (Enter to send, Shift+Enter for a new line)"></textarea>
+          <div class="row">
+            <label class="switch"><input type="checkbox" id="use-tools" checked> allow tools</label>
+            <label class="switch"><input type="checkbox" id="speak"> speak replies</label>
+            <button type="submit" class="primary">Send</button>
+          </div>
+        </form>
+      </div>
+      <aside class="side">
+        <h3>Session</h3>
+        <input id="session" value="default">
+        <h3>Plan first</h3>
+        <button id="plan-btn" class="ghost">Show a step plan</button>
+        <div id="plan" class="plan"></div>
+        <h3>Memory</h3>
+        <ul id="facts" class="facts"></ul>
+        <form id="fact-form" class="ghost-form">
+          <input id="fact-key" placeholder="key">
+          <input id="fact-value" placeholder="value">
+          <button>Remember</button>
+        </form>
+      </aside>
+    </div>
+  </section>
+
+  <section id="view-tasks" class="view"><h2>Tasks</h2><div id="tasks" class="cards"></div></section>
+
+  <section id="view-tools" class="view">
+    <h2>Registered tools</h2>
+    <p class="muted">Every call passes the policy engine before execution.</p>
+    <div id="tools" class="cards"></div>
+  </section>
+
+  <section id="view-security" class="view">
+    <h2>Security</h2>
+    <div class="grid2">
+      <div>
+        <h3>Policy overrides</h3>
+        <p class="muted">Set any tool to allow / ask / deny.</p>
+        <div id="policy" class="policy"></div>
+        <button id="policy-save" class="primary">Save policy</button>
+      </div>
+      <div>
+        <h3>Credential vault</h3>
+        <p class="muted">Encrypted locally with PBKDF2 + HMAC-CTPR. Never leaves this machine.</p>
+        <form id="vault-unlock" class="stack">
+          <input type="password" id="vault-pass" placeholder="vault password">
+          <label class="switch"><input type="checkbox" id="vault-create"> create if missing</label>
+          <button>Unlock</button>
+        </form>
+        <div id="vault-status" class="muted">locked</div>
+        <form id="vault-set" class="stack hidden">
+          <input id="vault-key" placeholder="key (e.g. portal_password)">
+          <input type="password" id="vault-value" placeholder="value">
+          <button>Store</button>
+        </form>
+        <ul id="vault-list" class="facts"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-audit" class="view">
+    <h2>Audit log</h2>
+    <p class="muted">Hash-chained, append only. <span id="audit-verify"></span></p>
+    <button id="audit-refresh" class="ghost">Refresh</button>
+    <div id="audit" class="cards"></div>
+  </section>
+
+  <section id="view-settings" class="view">
+    <h2>Settings</h2>
+    <div class="grid2">
+      <div><h3>Runtime</h3><div id="settings-status" class="kv"></div></div>
+      <div>
+        <h3>Voice</h3>
+        <div id="voice-backends" class="kv"></div>
+        <h3>Config</h3>
+        <p class="muted">Edit <code>~/.ultron/ultron.config.json</code> and restart to change model,
+           sandbox root, risk thresholds or the audit log path.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
